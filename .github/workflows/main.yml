@@ -19,32 +19,91 @@
 
 
 
+# ############ python version ##################
+# name: pipeline1
 
-name: pipeline1
+# on:
+#     push:
+#         branches:
+#             - main
 
+# jobs:
+#     run-python-code:
+#         runs-on: ubuntu-latest
+
+#         steps:
+#             - name: checkout code
+#               uses: actions/checkout@v7
+            
+#             - name: print python version
+#               run: python --version
+            
+#             - name: run python program
+#               run: python welcome.py
+
+
+
+
+# ############ SETUP PYTHON (the version in which we have written this code) ########
+# name: pipeline1
+
+# on:
+#     push:
+#         branches:
+#             - main
+
+# jobs:
+#     run-python-code:
+#         runs-on: ubuntu-latest
+
+#         steps:
+#             - name: checkout code
+#               uses: actions/checkout@v7
+            
+#             - name: print python version
+#               run: python --version
+            
+#             - name: setup python version
+#               uses: actions/setup-python@v7
+#               with:
+#                 python-version: '3.13' 
+
+#             - name: print python version
+#               run: python --version
+            
+#             - name: run python program
+#               run: python welcome.py
+
+name: ETL Pipleline
+
+# we will call based on some event
 on:
-    push:
-        branches:
-            - main
+  push:
+    branches:
+      - main
 
 jobs:
-    run-python-code:
-        runs-on: ubuntu-latest
+  extract-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v7 # action, use
+      - name: run python code
+        run: python extract.py
 
-        steps:
-            - name: checkout code
-              uses: actions/checkout@v7
-            
-            - name: print python version
-              run: python --version
-            
-            - name: setup python version
-              uses: actions/setup-python@v7
-              with:
-                python-version: '3.13' 
+  transform-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v7 # action, use
+      - name: run python code
+        run: python transform.py
 
-            - name: print python version
-              run: python --version
-            
-            - name: run python program
-              run: python welcome.py
+  load-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v7 # action, use
+      - name: run python code
+        run: python load.py
+  
