@@ -117,6 +117,44 @@
 
 
 
+# name: ETL Pipeline
+
+# # we will call based on some event
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   extract-job:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: checkout code
+#         uses: actions/checkout@v7 # action, use
+#       - name: run python code
+#         run: python extract.py
+
+#   transform-job:
+#     needs: extract-job
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: checkout code
+#         uses: actions/checkout@v7 # action, use
+#       - name: run python code
+#         run: python transform.py
+
+#   load-job:
+#     needs: transform-job
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: checkout code
+#         uses: actions/checkout@v7 # action, use
+#       - name: run python code
+#         run: python load.py
+
+
+
+
 name: ETL Pipeline
 
 # we will call based on some event
@@ -126,28 +164,43 @@ on:
       - main
 
 jobs:
-  extract-job:
+  job1:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout code
-        uses: actions/checkout@v7 # action, use
       - name: run python code
-        run: python extract.py
+        run: echo "job1"
 
-  transform-job:
-    needs: extract-job
+  job2:
+    needs: job1
     runs-on: ubuntu-latest
     steps:
-      - name: checkout code
-        uses: actions/checkout@v7 # action, use
       - name: run python code
-        run: python transform.py
+        run: echo "job2"
 
-  load-job:
-    needs: transform-job
+  job3:
+    needs: job1
     runs-on: ubuntu-latest
     steps:
-      - name: checkout code
-        uses: actions/checkout@v7 # action, use
       - name: run python code
-        run: python load.py
+        run: echo "job3"
+
+  job4:
+    needs: job2
+    runs-on: ubuntu-latest
+    steps:
+      - name: run python code
+        run: echo "job4"
+
+  job5:
+    needs: job3
+    runs-on: ubuntu-latest
+    steps:
+      - name: run python code
+        run: echo "job5"
+
+  job6:
+    needs: [job4, job5]
+    runs-on: ubuntu-latest
+    steps:
+      - name: run python code
+        run: echo "job6"
